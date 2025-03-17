@@ -19,6 +19,7 @@ list(APPEND PLUGIN_SOURCES
 	player.cpp
 	streamer.cpp
 	omp-nethack.cpp
+	objects.cpp
 )
 
 if(WIN32)
@@ -45,5 +46,6 @@ add_definitions(
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 target_link_libraries(${PROJECT_NAME} OMP-SDK omp-gdk OMP-Network)
+target_include_directories(${PROJECT_NAME} PUBLIC streamer)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

@@ -22,50 +22,50 @@
 class Data
 {
 public:
-	Data();
+    Data();
 
-	std::size_t getGlobalChunkTickRate(int type);
-	bool setGlobalChunkTickRate(int type, std::size_t value);
+    std::size_t getGlobalChunkTickRate(int type);
+    bool setGlobalChunkTickRate(int type, std::size_t value);
 
-	std::size_t getGlobalMaxItems(int type);
-	bool setGlobalMaxItems(int type, std::size_t value);
+    std::size_t getGlobalMaxItems(int type);
+    bool setGlobalMaxItems(int type, std::size_t value);
 
-	std::size_t getGlobalMaxVisibleItems(int type);
-	bool setGlobalMaxVisibleItems(int type, std::size_t value);
+    std::size_t getGlobalMaxVisibleItems(int type);
+    bool setGlobalMaxVisibleItems(int type, std::size_t value);
 
-	float getGlobalRadiusMultiplier(int type);
-	bool setGlobalRadiusMultiplier(int type, float value);
+    float getGlobalRadiusMultiplier(int type);
+    bool setGlobalRadiusMultiplier(int type, float value);
 
-	bool errorCallbackEnabled;
+    bool errorCallbackEnabled;
 
-	std::set<AMX*> interfaces;
-	std::set<AMX*> amxUnloadDestroyItems;
+    std::set<AMX*> interfaces;
+    std::set<AMX*> amxUnloadDestroyItems;
 
-	std::vector<int> destroyedActors;
+    std::vector<int> destroyedActors;
 
-	std::unordered_map<std::pair<int, int>, Item::SharedActor, pair_hash> discoveredActors;
-	std::unordered_map<std::pair<int, int>, Item::SharedPickup, pair_hash> discoveredPickups;
+    std::unordered_map<std::pair<int, int>, Item::SharedActor, pair_hash> discoveredActors;
+    std::unordered_map<std::pair<int, int>, Item::SharedPickup, pair_hash> discoveredPickups;
 
-	std::unordered_map<std::pair<int, int>, int, pair_hash> internalActors;
-	std::unordered_map<std::pair<int, int>, int, pair_hash> internalPickups;
+    std::unordered_map<std::pair<int, int>, int, pair_hash> internalActors;
+    std::unordered_map<std::pair<int, int>, int, pair_hash> internalPickups;
 
-	std::unordered_map<int, Item::SharedActor> actors;
-	std::unordered_map<int, Item::SharedArea> areas;
-	std::unordered_map<int, Item::SharedCheckpoint> checkpoints;
-	std::unordered_map<int, Item::SharedMapIcon> mapIcons;
-	std::unordered_map<int, Item::SharedObject> objects;
-	std::unordered_map<int, Item::SharedPickup> pickups;
-	std::unordered_map<int, Item::SharedRaceCheckpoint> raceCheckpoints;
-	std::unordered_map<int, Item::SharedTextLabel> textLabels;
+    std::unordered_map<int, Item::SharedActor> actors;
+    std::unordered_map<int, Item::SharedArea> areas;
+    std::unordered_map<int, Item::SharedCheckpoint> checkpoints;
+    std::unordered_map<int, Item::SharedMapIcon> mapIcons;
+    std::unordered_map<int, Item::SharedObject> objects;
+    std::unordered_map<int, Item::SharedPickup> pickups;
+    std::unordered_map<int, Item::SharedRaceCheckpoint> raceCheckpoints;
+    std::unordered_map<int, Item::SharedTextLabel> textLabels;
 
-	std::unordered_map<int, Player> players;
+    std::unordered_map<int, Player> players;
 
-	std::vector<int> typePriority;
+    std::vector<int> typePriority;
 private:
-	std::size_t globalChunkTickRate[STREAMER_MAX_TYPES];
-	std::size_t globalMaxItems[STREAMER_MAX_TYPES];
-	std::size_t globalMaxVisibleItems[STREAMER_MAX_TYPES];
-	float globalRadiusMultipliers[STREAMER_MAX_TYPES];
+    std::size_t globalChunkTickRate[STREAMER_MAX_TYPES];
+    std::size_t globalMaxItems[STREAMER_MAX_TYPES];
+    std::size_t globalMaxVisibleItems[STREAMER_MAX_TYPES];
+    float globalRadiusMultipliers[STREAMER_MAX_TYPES];
 };
 
 #endif

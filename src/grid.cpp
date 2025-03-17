@@ -429,7 +429,7 @@ void Grid::removeObject(const Item::SharedObject &object, bool reassign)
 			{
 				core->getStreamer()->attachedObjects.erase(object);
 			}
-			if (object->move)
+			if (object->_move)
 			{
 				core->getStreamer()->movingObjects.erase(object);
 			}

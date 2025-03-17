@@ -80,5 +80,6 @@
 #include "plugin.h"
 #include "ompgdk.hpp"
 #include "sdk.hpp"
+#include "streamer/StreamerComponent.hpp"
 
 #endif

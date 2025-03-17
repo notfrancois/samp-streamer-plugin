@@ -2062,17 +2062,17 @@ cell AMX_NATIVE_CALL Natives::Streamer_SetItemPos(AMX *amx, cell *params)
 						core->getGrid()->removeObject(o->second, true);
 					}
 				}
-				if (o->second->move)
+				if (o->second->_move)
 				{
-					o->second->move->duration = static_cast<int>((static_cast<float>(boost::geometry::distance(std::get<0>(o->second->move->position), o->second->position) / o->second->move->speed) * 1000.0f));
-					std::get<1>(o->second->move->position) = o->second->position;
-					std::get<2>(o->second->move->position) = (std::get<0>(o->second->move->position) - o->second->position) / static_cast<float>(o->second->move->duration);
-					if ((std::get<0>(o->second->move->rotation).maxCoeff() + 1000.0f) > std::numeric_limits<float>::epsilon())
+					o->second->_move->duration = static_cast<int>((static_cast<float>(boost::geometry::distance(std::get<0>(o->second->_move->position), o->second->position) / o->second->_move->speed) * 1000.0f));
+					std::get<1>(o->second->_move->position) = o->second->position;
+					std::get<2>(o->second->_move->position) = (std::get<0>(o->second->_move->position) - o->second->position) / static_cast<float>(o->second->_move->duration);
+					if ((std::get<0>(o->second->_move->rotation).maxCoeff() + 1000.0f) > std::numeric_limits<float>::epsilon())
 					{
-						std::get<1>(o->second->move->rotation) = o->second->rotation;
-						std::get<2>(o->second->move->rotation) = (std::get<0>(o->second->move->rotation) - o->second->rotation) / static_cast<float>(o->second->move->duration);
+						std::get<1>(o->second->_move->rotation) = o->second->rotation;
+						std::get<2>(o->second->_move->rotation) = (std::get<0>(o->second->_move->rotation) - o->second->rotation) / static_cast<float>(o->second->_move->duration);
 					}
-					o->second->move->time = std::chrono::steady_clock::now();
+					o->second->_move->time = std::chrono::steady_clock::now();
 				}
 				return 1;
 			}

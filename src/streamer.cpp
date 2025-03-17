@@ -1030,11 +1030,11 @@ void Streamer::processObjects(Player &player, const std::vector<SharedCell> &cel
 				ompgdk::AttachPlayerObjectToVehicle(player.playerId, internalId, d->second->attach->vehicle, d->second->attach->positionOffset[0], d->second->attach->positionOffset[1], d->second->attach->positionOffset[2], d->second->attach->rotation[0], d->second->attach->rotation[1], d->second->attach->rotation[2]);
 			}
 		}
-		else if (d->second->move)
+		else if (d->second->_move)
 		{
-			ompgdk::MovePlayerObject(player.playerId, internalId, std::get<0>(d->second->move->position)[0], std::get<0>(d->second->move->position)[1], std::get<0>(d->second->move->position)[2], d->second->move->speed, std::get<0>(d->second->move->rotation)[0], std::get<0>(d->second->move->rotation)[1], std::get<0>(d->second->move->rotation)[2]);
+			ompgdk::MovePlayerObject(player.playerId, internalId, std::get<0>(d->second->_move->position)[0], std::get<0>(d->second->_move->position)[1], std::get<0>(d->second->_move->position)[2], d->second->_move->speed, std::get<0>(d->second->_move->rotation)[0], std::get<0>(d->second->_move->rotation)[1], std::get<0>(d->second->_move->rotation)[2]);
 		}
-		for (std::unordered_map<int, Item::Object::Material>::iterator m = d->second->materials.begin(); m != d->second->materials.end(); ++m)
+		for (std::unordered_map<int, streamer::objects::Object::Material>::iterator m = d->second->materials.begin(); m != d->second->materials.end(); ++m)
 		{
 			if (m->second.main)
 			{
@@ -1341,25 +1341,25 @@ void Streamer::processMovingObjects()
 	while (o != movingObjects.end())
 	{
 		bool objectFinishedMoving = false;
-		if ((*o)->move)
+		if ((*o)->_move)
 		{
-			std::chrono::duration<float, std::milli> elapsedTime = std::chrono::steady_clock::now() - (*o)->move->time;
-			if (std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count() < (*o)->move->duration)
+			std::chrono::duration<float, std::milli> elapsedTime = std::chrono::steady_clock::now() - (*o)->_move->time;
+			if (std::chrono::duration_cast<std::chrono::milliseconds>(elapsedTime).count() < (*o)->_move->duration)
 			{
-				(*o)->position = std::get<1>((*o)->move->position) + (std::get<2>((*o)->move->position) * elapsedTime.count());
-				if (!Utility::almostEquals(std::get<0>((*o)->move->rotation).maxCoeff(), -1000.0f))
+				(*o)->position = std::get<1>((*o)->_move->position) + (std::get<2>((*o)->_move->position) * elapsedTime.count());
+				if (!Utility::almostEquals(std::get<0>((*o)->_move->rotation).maxCoeff(), -1000.0f))
 				{
-					(*o)->rotation = std::get<1>((*o)->move->rotation) + (std::get<2>((*o)->move->rotation) * elapsedTime.count());
+					(*o)->rotation = std::get<1>((*o)->_move->rotation) + (std::get<2>((*o)->_move->rotation) * elapsedTime.count());
 				}
 			}
 			else
 			{
-				(*o)->position = std::get<0>((*o)->move->position);
-				if (!Utility::almostEquals(std::get<0>((*o)->move->rotation).maxCoeff(), -1000.0f))
+				(*o)->position = std::get<0>((*o)->_move->position);
+				if (!Utility::almostEquals(std::get<0>((*o)->_move->rotation).maxCoeff(), -1000.0f))
 				{
-					(*o)->rotation = std::get<0>((*o)->move->rotation);
+					(*o)->rotation = std::get<0>((*o)->_move->rotation);
 				}
-				(*o)->move.reset();
+				(*o)->_move.reset();
 				objectMoveCallbacks.push_back((*o)->objectId);
 				objectFinishedMoving = true;
 			}

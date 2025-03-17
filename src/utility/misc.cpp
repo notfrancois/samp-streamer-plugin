@@ -106,7 +106,7 @@ std::unordered_map<int, Item::SharedMapIcon>::iterator Utility::destroyMapIcon(s
 
 std::unordered_map<int, Item::SharedObject>::iterator Utility::destroyObject(std::unordered_map<int, Item::SharedObject>::iterator o)
 {
-	Item::Object::identifier.remove(o->first, core->getData()->objects.size());
+	streamer::objects::Object::identifier.remove(o->first, core->getData()->objects.size());
 	for (std::unordered_map<int, Player>::iterator p = core->getData()->players.begin(); p != core->getData()->players.end(); ++p)
 	{
 		Item::Bimap<Item::SharedObject>::Type::right_iterator d = p->second.discoveredObjects.right.find(std::make_tuple(o->first, o->second));

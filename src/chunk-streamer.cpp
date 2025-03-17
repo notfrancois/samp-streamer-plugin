@@ -431,11 +431,11 @@ void ChunkStreamer::streamObjects(Player &player, bool automatic)
 						ompgdk::AttachPlayerObjectToVehicle(player.playerId, internalId, std::get<1>(d->second)->attach->vehicle, std::get<1>(d->second)->attach->positionOffset[0], std::get<1>(d->second)->attach->positionOffset[1], std::get<1>(d->second)->attach->positionOffset[2], std::get<1>(d->second)->attach->rotation[0], std::get<1>(d->second)->attach->rotation[1], std::get<1>(d->second)->attach->rotation[2]);
 					}
 				}
-				else if (std::get<1>(d->second)->move)
+				else if (std::get<1>(d->second)->_move)
 				{
-					ompgdk::MovePlayerObject(player.playerId, internalId, std::get<0>(std::get<1>(d->second)->move->position)[0], std::get<0>(std::get<1>(d->second)->move->position)[1], std::get<0>(std::get<1>(d->second)->move->position)[2], std::get<1>(d->second)->move->speed, std::get<0>(std::get<1>(d->second)->move->rotation)[0], std::get<0>(std::get<1>(d->second)->move->rotation)[1], std::get<0>(std::get<1>(d->second)->move->rotation)[2]);
+					ompgdk::MovePlayerObject(player.playerId, internalId, std::get<0>(std::get<1>(d->second)->_move->position)[0], std::get<0>(std::get<1>(d->second)->_move->position)[1], std::get<0>(std::get<1>(d->second)->_move->position)[2], std::get<1>(d->second)->_move->speed, std::get<0>(std::get<1>(d->second)->_move->rotation)[0], std::get<0>(std::get<1>(d->second)->_move->rotation)[1], std::get<0>(std::get<1>(d->second)->_move->rotation)[2]);
 				}
-				for (std::unordered_map<int, Item::Object::Material>::iterator m = std::get<1>(d->second)->materials.begin(); m != std::get<1>(d->second)->materials.end(); ++m)
+				for (std::unordered_map<int, streamer::objects::Object::Material>::iterator m = std::get<1>(d->second)->materials.begin(); m != std::get<1>(d->second)->materials.end(); ++m)
 				{
 					if (m->second.main)
 					{

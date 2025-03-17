@@ -945,12 +945,12 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 						if (static_cast<int>(params[4]) != INVALID_STREAMER_ID)
 						{
 							// Now we have AttachPlayerObjectToObject built in, no need for YSF
-							if (o->second->move)
+							if (o->second->_move)
 							{
 								Utility::logError("Streamer_SetIntData: Object is currently moving and must be stopped first.");
 								return 0;
 							}
-							o->second->attach = std::make_shared<Item::Object::Attach>();
+							o->second->attach = std::make_shared<streamer::objects::Object::Attach>();
 							o->second->attach->player = INVALID_PLAYER_ID;
 							o->second->attach->vehicle = INVALID_VEHICLE_ID;
 							o->second->attach->object = static_cast<int>(params[4]);
@@ -979,12 +979,12 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 					{
 						if (static_cast<int>(params[4]) != INVALID_PLAYER_ID)
 						{
-							if (o->second->move)
+							if (o->second->_move)
 							{
 								Utility::logError("Streamer_SetIntData: Object is currently moving and must be stopped first.");
 								return 0;
 							}
-							o->second->attach = std::make_shared<Item::Object::Attach>();
+							o->second->attach = std::make_shared<streamer::objects::Object::Attach>();
 							o->second->attach->object = INVALID_STREAMER_ID;
 							o->second->attach->vehicle = INVALID_VEHICLE_ID;
 							o->second->attach->player = static_cast<int>(params[4]);
@@ -1012,12 +1012,12 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 					{
 						if (static_cast<int>(params[4]) != INVALID_VEHICLE_ID)
 						{
-							if (o->second->move)
+							if (o->second->_move)
 							{
 								Utility::logError("Streamer_SetIntData: Object is currently moving and must be stopped first.");
 								return 0;
 							}
-							o->second->attach = std::make_shared<Item::Object::Attach>();
+							o->second->attach = std::make_shared<streamer::objects::Object::Attach>();
 							o->second->attach->object = INVALID_STREAMER_ID;
 							o->second->attach->player = INVALID_PLAYER_ID;
 							o->second->attach->vehicle = static_cast<int>(params[4]);
@@ -1119,11 +1119,11 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 									ompgdk::AttachPlayerObjectToVehicle(p->first, i->second, o->second->attach->vehicle, o->second->attach->positionOffset[0], o->second->attach->positionOffset[1], o->second->attach->positionOffset[2], o->second->attach->rotation[0], o->second->attach->rotation[1], o->second->attach->rotation[2]);
 								}
 							}
-							else if (o->second->move)
+							else if (o->second->_move)
 							{
-								ompgdk::MovePlayerObject(p->first, i->second, std::get<0>(o->second->move->position)[0], std::get<0>(o->second->move->position)[1], std::get<0>(o->second->move->position)[2], o->second->move->speed, std::get<0>(o->second->move->rotation)[0], std::get<0>(o->second->move->rotation)[1], std::get<0>(o->second->move->rotation)[2]);
+								ompgdk::MovePlayerObject(p->first, i->second, std::get<0>(o->second->_move->position)[0], std::get<0>(o->second->_move->position)[1], std::get<0>(o->second->_move->position)[2], o->second->_move->speed, std::get<0>(o->second->_move->rotation)[0], std::get<0>(o->second->_move->rotation)[1], std::get<0>(o->second->_move->rotation)[2]);
 							}
-							for (std::unordered_map<int, Item::Object::Material>::iterator m = o->second->materials.begin(); m != o->second->materials.end(); ++m)
+							for (std::unordered_map<int, streamer::objects::Object::Material>::iterator m = o->second->materials.begin(); m != o->second->materials.end(); ++m)
 							{
 								if (m->second.main)
 								{

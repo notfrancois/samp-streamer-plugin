@@ -68,126 +68,134 @@ typedef boost::geometry::model::box<Eigen::Vector2f> Box2d;
 typedef boost::geometry::model::box<Eigen::Vector3f> Box3d;
 typedef boost::geometry::model::polygon<Eigen::Vector2f> Polygon2d;
 
-namespace Item
+namespace streamer::objects
 {
-	struct Actor;
-	struct Area;
-	struct Checkpoint;
-	struct MapIcon;
-	struct Object;
-	struct Pickup;
-	struct RaceCheckpoint;
-	struct TextLabel;
-
-	typedef std::shared_ptr<Actor> SharedActor;
-	typedef std::shared_ptr<Area> SharedArea;
-	typedef std::shared_ptr<Checkpoint> SharedCheckpoint;
-	typedef std::shared_ptr<MapIcon> SharedMapIcon;
-	typedef std::shared_ptr<Object> SharedObject;
-	typedef std::shared_ptr<Pickup> SharedPickup;
-	typedef std::shared_ptr<RaceCheckpoint> SharedRaceCheckpoint;
-	typedef std::shared_ptr<TextLabel> SharedTextLabel;
-
-	template<typename T>
-	struct Hash
-	{
-		std::size_t operator()(std::tuple<int, T> const &t) const
-		{
-			std::size_t seed = 0;
-			boost::hash_combine(seed, std::get<0>(t));
-			boost::hash_combine(seed, std::get<1>(t));
-			return seed;
-		}
-	};
-
-	struct PairCompare
-	{
-		bool operator()(std::pair<int, float> const &a, std::pair<int, float> const &b) const
-		{
-			if (a.first != b.first)
-			{
-				return a.first > b.first;
-			}
-			return a.second < b.second;
-		}
-	};
-
-	template<typename T>
-	struct LeftTupleCompare
-	{
-		bool operator()(std::tuple<int, float> const &a, std::tuple<int, float> const &b) const
-		{
-			if (std::get<0>(a) != std::get<0>(b))
-			{
-				return std::get<0>(a) > std::get<0>(b);
-			}
-			return std::get<1>(a) < std::get<1>(b);
-		}
-	};
-
-	template<typename T>
-	struct RightTupleCompare
-	{
-		bool operator()(std::tuple<int, T> const &a, std::tuple<int, T> const &b) const
-		{
-			return std::get<0>(a) == std::get<0>(b) && std::get<1>(a) == std::get<1>(b);
-		}
-	};
-
-	template<typename T>
-	struct Bimap
-	{
-		typedef boost::bimap<boost::bimaps::multiset_of<std::tuple<int, float>, LeftTupleCompare<T> >, boost::bimaps::unordered_set_of<std::tuple<int, T>, Hash<T>, RightTupleCompare<T> > > Type;
-	};
+    struct Object;
 }
 
-namespace boost { namespace geometry { namespace traits {
-	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-	struct tag<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
-	{
-		typedef point_tag type;
-	};
+namespace Item
+{
+    struct Actor;
+    struct Area;
+    struct Checkpoint;
+    struct MapIcon;
+    struct Pickup;
+    struct RaceCheckpoint;
+    struct TextLabel;
 
-	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-	struct coordinate_type<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
-	{
-		typedef _Scalar type;
-	};
+    typedef std::shared_ptr<Actor> SharedActor;
+    typedef std::shared_ptr<Area> SharedArea;
+    typedef std::shared_ptr<Checkpoint> SharedCheckpoint;
+    typedef std::shared_ptr<MapIcon> SharedMapIcon;
+    typedef std::shared_ptr<streamer::objects::Object> SharedObject;
+    typedef std::shared_ptr<Pickup> SharedPickup;
+    typedef std::shared_ptr<RaceCheckpoint> SharedRaceCheckpoint;
+    typedef std::shared_ptr<TextLabel> SharedTextLabel;
 
-	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-	struct coordinate_system<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
-	{
-		typedef cs::cartesian type;
-	};
+    template<typename T>
+    struct Hash
+    {
+        std::size_t operator()(std::tuple<int, T> const& t) const
+        {
+            std::size_t seed = 0;
+            boost::hash_combine(seed, std::get<0>(t));
+            boost::hash_combine(seed, std::get<1>(t));
+            return seed;
+        }
+    };
 
-	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-	struct dimension<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> > : boost::mpl::int_<_Rows> {};
+    struct PairCompare
+    {
+        bool operator()(std::pair<int, float> const& a, std::pair<int, float> const& b) const
+        {
+            if (a.first != b.first)
+            {
+                return a.first > b.first;
+            }
+            return a.second < b.second;
+        }
+    };
 
-	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols, std::size_t Dimension>
-	struct access<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>, Dimension>
-	{
-		static inline _Scalar get(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const &matrix)
-		{
-			return matrix[Dimension];
-		}
+    template<typename T>
+    struct LeftTupleCompare
+    {
+        bool operator()(std::tuple<int, float> const& a, std::tuple<int, float> const& b) const
+        {
+            if (std::get<0>(a) != std::get<0>(b))
+            {
+                return std::get<0>(a) > std::get<0>(b);
+            }
+            return std::get<1>(a) < std::get<1>(b);
+        }
+    };
 
-		static inline void set(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> &matrix, _Scalar const &value)
-		{
-			matrix[Dimension] = value;
-		}
-	};
-}}}
+    template<typename T>
+    struct RightTupleCompare
+    {
+        bool operator()(std::tuple<int, T> const& a, std::tuple<int, T> const& b) const
+        {
+            return std::get<0>(a) == std::get<0>(b) && std::get<1>(a) == std::get<1>(b);
+        }
+    };
+
+    template<typename T>
+    struct Bimap
+    {
+        typedef boost::bimap<boost::bimaps::multiset_of<std::tuple<int, float>, LeftTupleCompare<T> >, boost::bimaps::unordered_set_of<std::tuple<int, T>, Hash<T>, RightTupleCompare<T> > > Type;
+    };
+}
+
+namespace boost {
+    namespace geometry {
+        namespace traits {
+            template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
+            struct tag<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
+            {
+                typedef point_tag type;
+            };
+
+            template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
+            struct coordinate_type<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
+            {
+                typedef _Scalar type;
+            };
+
+            template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
+            struct coordinate_system<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
+            {
+                typedef cs::cartesian type;
+            };
+
+            template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
+            struct dimension<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> > : boost::mpl::int_<_Rows> {};
+
+            template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols, std::size_t Dimension>
+            struct access<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>, Dimension>
+            {
+                static inline _Scalar get(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const& matrix)
+                {
+                    return matrix[Dimension];
+                }
+
+                static inline void set(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>& matrix, _Scalar const& value)
+                {
+                    matrix[Dimension] = value;
+                }
+            };
+        }
+    }
+}
 
 struct pair_hash
 {
-	template <class T1, class T2>
-	std::size_t operator () (std::pair<T1, T2> const& pair) const
-	{
-		std::size_t h1 = std::hash<T1>()(pair.first);
-		std::size_t h2 = std::hash<T2>()(pair.second);
+    template <class T1, class T2>
+    std::size_t operator () (std::pair<T1, T2> const& pair) const
+    {
+        std::size_t h1 = std::hash<T1>()(pair.first);
+        std::size_t h2 = std::hash<T2>()(pair.second);
 
-		return h1 ^ h2;
-	}
+        return h1 ^ h2;
+    }
 };
 
 #endif
