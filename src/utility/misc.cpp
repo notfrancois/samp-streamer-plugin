@@ -23,7 +23,7 @@ using namespace Utility;
 
 std::unordered_map<int, Item::SharedActor>::iterator Utility::destroyActor(std::unordered_map<int, Item::SharedActor>::iterator a)
 {
-	Item::Actor::identifier.remove(a->first, core->getData()->actors.size());
+	streamer::actors::Actor::identifier.remove(a->first, core->getData()->actors.size());
 	for (std::unordered_set<int>::const_iterator w = a->second->worlds.begin(); w != a->second->worlds.end(); ++w)
 	{
 		std::unordered_map<std::pair<int, int>, int, pair_hash>::iterator i = core->getData()->internalActors.find(std::make_pair(a->first, *w));

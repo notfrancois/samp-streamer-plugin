@@ -19,11 +19,48 @@
 
 #include "sdk.hpp"
 
+constexpr auto STREAMER_ACTOR_SD = 200.0f;
+
 constexpr auto STREAMER_OBJECT_SD = 300.0f;
 constexpr auto STREAMER_OBJECT_DD = 0.0f;
 
 namespace streamer
 {
+    struct IActor : public IIDProvider, public IExtensible
+    {
+        struct Anim
+        {
+            float delta;
+            bool freeze;
+            std::string lib;
+            bool loop;
+            bool lockx;
+            bool locky;
+            std::string name;
+            int references;
+            int time;
+        };
+
+        virtual Vector3 getPosition() const = 0;
+        virtual void setPosition(Vector3 position) = 0;
+
+        virtual float getRotation() const = 0;
+        virtual void setRotation(float rotation) = 0;
+
+        virtual int getVirtualWorld() const = 0;
+        virtual void setVirtualWorld(int rotation) = 0;
+
+        virtual float getHealth() const = 0;
+        virtual void setHealth(float health) = 0;
+
+        virtual bool isInvulnerable() const = 0;
+        virtual void setInvulnerable(bool invulnerable) = 0;
+
+        virtual std::optional<Anim> getAnimation() const = 0;
+        virtual void applyAnimation(const Anim& anim) = 0;
+        virtual void clearAnimation() = 0;
+    };
+
     struct IObject : public IIDProvider, public IExtensible
     {
         struct Material
@@ -89,6 +126,14 @@ namespace streamer
 struct IOmpStreamerComponent : public IComponent
 {
     PROVIDE_UID(0x11897f0dbabe4f7c);
+
+    virtual std::shared_ptr<streamer::IActor> getDynamicActor(int actorId)                                                                                                                                                                                                                                                                                                                                              = 0;
+    virtual std::shared_ptr<streamer::IActor> createDynamicActor(int modelId, const Vector3& position, float rotation, bool invulnerable = true, float health = 100.0, int worldId = -1, int interiorId = -1, int playerId = -1, float streamDistance = STREAMER_ACTOR_SD, int areaId = -1, int priority = 0)                                                                                                           = 0;
+    virtual std::shared_ptr<streamer::IActor> createDynamicActorEx(int modelId, const Vector3& position, float rotation, bool invulnerable = true, float health = 100.0, float streamDistance = STREAMER_ACTOR_SD, const std::unordered_set<int>& worlds = {}, const std::unordered_set<int>& interiors = {}, const std::unordered_set<int>& players = {}, const std::unordered_set<int>& areas = {}, int priority = 0) = 0;
+    virtual bool                              destroyDynamicActor(int actorId)                                                                                                                                                                                                                                                                                                                                          = 0;
+    virtual bool                              isDynamicActorStreamedIn(int actorId, int playerId)                                                                                                                                                                                                                                                                                                                       = 0;
+    virtual std::shared_ptr<streamer::IActor> getPlayerTargetDynamicActor(int playerId)                                                                                                                                                                                                                                                                                                                                 = 0;
+    virtual std::shared_ptr<streamer::IActor> getPlayerCameraTargetDynActor(int playerId)                                                                                                                                                                                                                                                                                                                               = 0;
 
     virtual std::shared_ptr<streamer::IObject> getDynamicObject(int objectId)                                                                                                                                                                                                                                                                                                                                                = 0;
     virtual std::shared_ptr<streamer::IObject> createDynamicObject(int modelId, const Vector3& position, const Vector3& rotation, int worldId = -1, int interiorId = -1, int playerId = -1, float streamDistance = STREAMER_OBJECT_SD, float drawDistance = STREAMER_OBJECT_DD, int areaId = -1, int priority = 0)                                                                                                           = 0;

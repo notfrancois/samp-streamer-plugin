@@ -20,59 +20,11 @@
 #include "cell.h"
 #include "identifier.h"
 
+#include "actors.hpp"
 #include "objects.hpp"
 
 namespace Item
 {
-    struct Actor
-    {
-        Actor();
-
-        int actorId;
-        AMX* amx;
-        SharedCell cell;
-        float comparableStreamDistance;
-        float health;
-        bool inverseAreaChecking;
-        bool invulnerable;
-        int modelId;
-        float originalComparableStreamDistance;
-        Eigen::Vector3f position;
-        Eigen::Vector3f positionOffset;
-        int priority;
-        int references;
-        float rotation;
-        float streamDistance;
-
-        struct Anim
-        {
-            Anim();
-
-            float delta;
-            bool freeze;
-            std::string lib;
-            bool loop;
-            bool lockx;
-            bool locky;
-            std::string name;
-            int references;
-            int time;
-        };
-
-        std::shared_ptr<Anim> anim;
-
-        std::unordered_set<int> areas;
-        std::vector<int> extras;
-        std::unordered_map<int, std::vector<int>> extraExtras;
-        std::unordered_set<int> interiors;
-        std::bitset<PLAYER_POOL_SIZE> players;
-        std::unordered_set<int> worlds;
-
-        static Identifier identifier;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
-
     struct Area
     {
         Area();

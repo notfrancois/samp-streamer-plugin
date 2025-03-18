@@ -68,6 +68,11 @@ typedef boost::geometry::model::box<Eigen::Vector2f> Box2d;
 typedef boost::geometry::model::box<Eigen::Vector3f> Box3d;
 typedef boost::geometry::model::polygon<Eigen::Vector2f> Polygon2d;
 
+namespace streamer::actors
+{
+    struct Actor;
+} // namespace streamer::actors
+
 namespace streamer::objects
 {
     struct Object;
@@ -75,7 +80,6 @@ namespace streamer::objects
 
 namespace Item
 {
-    struct Actor;
     struct Area;
     struct Checkpoint;
     struct MapIcon;
@@ -83,7 +87,7 @@ namespace Item
     struct RaceCheckpoint;
     struct TextLabel;
 
-    typedef std::shared_ptr<Actor> SharedActor;
+    typedef std::shared_ptr<streamer::actors::Actor> SharedActor;
     typedef std::shared_ptr<Area> SharedArea;
     typedef std::shared_ptr<Checkpoint> SharedCheckpoint;
     typedef std::shared_ptr<MapIcon> SharedMapIcon;

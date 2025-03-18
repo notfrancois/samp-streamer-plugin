@@ -372,6 +372,42 @@ class OmpStreamerComponent final : public CoreEventHandler, public PawnEventHand
         // Clean up what you did above
     }
 
+    // actors
+    std::shared_ptr<streamer::IActor> getDynamicActor(int actorId)
+    {
+        return streamer::actors::GetDynamicActor(actorId);
+    }
+
+    std::shared_ptr<streamer::IActor> createDynamicActor(int modelId, const Vector3& position, float rotation, bool invulnerable, float health, int worldId, int interiorId, int playerId, float streamDistance, int areaId, int priority)
+    {
+        return streamer::actors::CreateDynamicActor(std::nullopt, modelId, Eigen::Vector3f { position.x, position.y, position.z }, rotation, invulnerable, health, worldId, interiorId, playerId, streamDistance, areaId, priority);
+    }
+
+    std::shared_ptr<streamer::IActor> createDynamicActorEx(int modelId, const Vector3& position, float rotation, bool invulnerable, float health, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority)
+    {
+        return streamer::actors::CreateDynamicActorEx(std::nullopt, modelId, Eigen::Vector3f { position.x, position.y, position.z }, rotation, invulnerable, health, streamDistance, worlds, interiors, players, areas, priority);
+    }
+
+    bool destroyDynamicActor(int actorId)
+    {
+        return streamer::actors::DestroyDynamicActor(actorId);
+    }
+
+    bool isDynamicActorStreamedIn(int actorId, int playerId)
+    {
+        return streamer::actors::IsDynamicActorStreamedIn(actorId, playerId);
+    }
+
+    std::shared_ptr<streamer::IActor> getPlayerTargetDynamicActor(int playerId)
+    {
+        return streamer::actors::GetPlayerTargetDynamicActor(playerId);
+    }
+
+    std::shared_ptr<streamer::IActor> getPlayerCameraTargetDynActor(int playerId)
+    {
+        return streamer::actors::GetPlayerCameraTargetDynActor(playerId);
+    }
+
     // objects
     std::shared_ptr<streamer::IObject> getDynamicObject(int objectId)
     {

@@ -20,6 +20,7 @@ list(APPEND PLUGIN_SOURCES
 	streamer.cpp
 	omp-nethack.cpp
 	objects.cpp
+    actors.cpp
 )
 
 if(WIN32)

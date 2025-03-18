@@ -376,29 +376,28 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicPolygonEx(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL Natives::CreateDynamicActorEx(AMX* amx, cell* params)
 {
     CHECK_PARAMS(17);
-    if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_ACTOR) == core->getData()->actors.size())
-    {
-        return INVALID_STREAMER_ID;
-    }
-    int actorId = Item::Actor::identifier.get();
-    Item::SharedActor actor(new Item::Actor);
-    actor->amx = amx;
-    actor->actorId = actorId;
-    actor->inverseAreaChecking = false;
-    actor->originalComparableStreamDistance = -1.0f;
-    actor->modelId = static_cast<int>(params[1]);
-    actor->position = Eigen::Vector3f(amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]));
-    actor->rotation = amx_ctof(params[5]);
-    actor->invulnerable = static_cast<int>(params[6]) != 0;
-    actor->health = amx_ctof(params[7]);
-    actor->comparableStreamDistance = amx_ctof(params[8]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[8]) : amx_ctof(params[8]) * amx_ctof(params[8]);
-    actor->streamDistance = amx_ctof(params[8]);
-    Utility::convertArrayToContainer(amx, params[9], params[14], actor->worlds);
-    Utility::convertArrayToContainer(amx, params[10], params[15], actor->interiors);
-    Utility::convertArrayToContainer(amx, params[11], params[16], actor->players);
-    Utility::convertArrayToContainer(amx, params[12], params[17], actor->areas);
-    actor->priority = static_cast<int>(params[13]);
-    core->getGrid()->addActor(actor);
-    core->getData()->actors.insert(std::make_pair(actorId, actor));
-    return static_cast<cell>(actorId);
+
+    int modelId = static_cast<int>(params[1]);
+
+    Eigen::Vector3f position { amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]) };
+
+    float rotation       = amx_ctof(params[5]);
+    bool  invulnerable   = static_cast<int>(params[6]) != 0;
+    float health         = amx_ctof(params[7]);
+    float streamDistance = amx_ctof(params[8]);
+
+    std::unordered_set<int> worlds;
+    std::unordered_set<int> interiors;
+    std::unordered_set<int> players;
+    std::unordered_set<int> areas;
+    Utility::convertArrayToContainer(amx, params[9], params[14], worlds);
+    Utility::convertArrayToContainer(amx, params[10], params[15], interiors);
+    Utility::convertArrayToContainer(amx, params[11], params[16], players);
+    Utility::convertArrayToContainer(amx, params[12], params[17], areas);
+
+    int priority = static_cast<int>(params[13]);
+
+    auto actor = streamer::actors::CreateDynamicActorEx(amx, modelId, position, rotation, invulnerable, health, streamDistance, worlds, interiors, players, areas, priority);
+    if (actor == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(actor->getID());
 }
