@@ -434,6 +434,27 @@ class OmpStreamerComponent final : public CoreEventHandler, public PawnEventHand
         return streamer::objects::GetPlayerCameraTargetDynObject(playerId);
     }
 
+    // textlabels
+    std::shared_ptr<streamer::ITextLabel> getDynamicTextLabel(int textlabelId)
+    {
+        return streamer::textlabels::GetDynamicTextLabel(textlabelId);
+    }
+
+    std::shared_ptr<streamer::ITextLabel> createDynamicTextLabel(const std::string& text, int color, const Vector3& position, float drawDistance, int attachedPlayerId, int attachedVehicleId, bool testLOS, int worldId, int interiorId, int playerId, float streamDistance, int areaId, int priority)
+    {
+        return streamer::textlabels::CreateDynamicTextLabel(std::nullopt, text, color, Eigen::Vector3f { position.x, position.y, position.z }, drawDistance, attachedPlayerId, attachedVehicleId, testLOS, worldId, interiorId, playerId, streamDistance, areaId, priority);
+    }
+
+    std::shared_ptr<streamer::ITextLabel> createDynamicTextLabelEx(const std::string& text, int color, const Vector3& position, float drawDistance, int attachedPlayerId, int attachedVehicleId, bool testLOS, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority)
+    {
+        return streamer::textlabels::CreateDynamicTextLabelEx(std::nullopt, text, color, Eigen::Vector3f { position.x, position.y, position.z }, drawDistance, attachedPlayerId, attachedVehicleId, testLOS, streamDistance, worlds, interiors, players, areas, priority);
+    }
+
+    bool destroyDynamicTextLabel(int textlabelId)
+    {
+        return streamer::textlabels::DestroyDynamicTextLabel(textlabelId);
+    }
+
 private:
     ICore*          omp_core      = nullptr;
     IPlayerPool*    players       = nullptr;

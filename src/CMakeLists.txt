@@ -21,6 +21,7 @@ list(APPEND PLUGIN_SOURCES
 	omp-nethack.cpp
 	objects.cpp
     actors.cpp
+    text-labels.cpp
 )
 
 if(WIN32)

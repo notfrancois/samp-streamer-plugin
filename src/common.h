@@ -78,6 +78,11 @@ namespace streamer::objects
     struct Object;
 }
 
+namespace streamer::textlabels
+{
+    struct TextLabel;
+} // namespace streamer::textlabels
+
 namespace Item
 {
     struct Area;
@@ -85,7 +90,6 @@ namespace Item
     struct MapIcon;
     struct Pickup;
     struct RaceCheckpoint;
-    struct TextLabel;
 
     typedef std::shared_ptr<streamer::actors::Actor> SharedActor;
     typedef std::shared_ptr<Area> SharedArea;
@@ -94,7 +98,7 @@ namespace Item
     typedef std::shared_ptr<streamer::objects::Object> SharedObject;
     typedef std::shared_ptr<Pickup> SharedPickup;
     typedef std::shared_ptr<RaceCheckpoint> SharedRaceCheckpoint;
-    typedef std::shared_ptr<TextLabel> SharedTextLabel;
+    typedef std::shared_ptr<streamer::textlabels::TextLabel> SharedTextLabel;
 
     template<typename T>
     struct Hash

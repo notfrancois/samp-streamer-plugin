@@ -1438,7 +1438,7 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 					{
 						if (static_cast<int>(params[4]) != INVALID_PLAYER_ID)
 						{
-							t->second->attach = std::make_shared<Item::TextLabel::Attach>();
+							t->second->attach = std::make_shared<streamer::textlabels::TextLabel::Attach>();
 							t->second->attach->player = static_cast<int>(params[4]);
 							t->second->attach->vehicle = INVALID_VEHICLE_ID;
 							core->getStreamer()->attachedTextLabels.insert(t->second);
@@ -1463,7 +1463,7 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 					{
 						if (static_cast<int>(params[4]) != INVALID_VEHICLE_ID)
 						{
-							t->second->attach = std::make_shared<Item::TextLabel::Attach>();
+                            t->second->attach = std::make_shared<streamer::textlabels::TextLabel::Attach>();
 							t->second->attach->player = INVALID_PLAYER_ID;
 							t->second->attach->vehicle = static_cast<int>(params[4]);
 							core->getStreamer()->attachedTextLabels.insert(t->second);

@@ -176,7 +176,7 @@ std::unordered_map<int, Item::SharedRaceCheckpoint>::iterator Utility::destroyRa
 
 std::unordered_map<int, Item::SharedTextLabel>::iterator Utility::destroyTextLabel(std::unordered_map<int, Item::SharedTextLabel>::iterator t)
 {
-	Item::TextLabel::identifier.remove(t->first, core->getData()->textLabels.size());
+	streamer::textlabels::TextLabel::identifier.remove(t->first, core->getData()->textLabels.size());
 	for (std::unordered_map<int, Player>::iterator p = core->getData()->players.begin(); p != core->getData()->players.end(); ++p)
 	{
 		Item::Bimap<Item::SharedTextLabel>::Type::right_iterator d = p->second.discoveredTextLabels.right.find(std::make_tuple(t->first, t->second));

@@ -22,6 +22,7 @@
 
 #include "actors.hpp"
 #include "objects.hpp"
+#include "text-labels.hpp"
 
 namespace Item
 {
@@ -183,55 +184,6 @@ namespace Item
         bool streamCallbacks;
         float streamDistance;
         int type;
-
-        std::unordered_set<int> areas;
-        std::vector<int> extras;
-        std::unordered_map<int, std::vector<int>> extraExtras;
-        std::unordered_set<int> interiors;
-        std::bitset<PLAYER_POOL_SIZE> players;
-        std::unordered_set<int> worlds;
-
-        static Identifier identifier;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
-
-    struct TextLabel
-    {
-        TextLabel();
-
-        AMX* amx;
-        SharedCell cell;
-        int color;
-        float comparableStreamDistance;
-        float drawDistance;
-        bool inverseAreaChecking;
-        float originalComparableStreamDistance;
-        Eigen::Vector3f position;
-        Eigen::Vector3f positionOffset;
-        int priority;
-        int references;
-        bool streamCallbacks;
-        float streamDistance;
-        bool testLOS;
-        std::string text;
-        int textLabelId;
-
-        struct Attach
-        {
-            Attach();
-
-            int player;
-            Eigen::Vector3f position;
-            int references;
-            int vehicle;
-
-            std::unordered_set<int> worlds;
-
-            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-        };
-
-        std::shared_ptr<Attach> attach;
 
         std::unordered_set<int> areas;
         std::vector<int> extras;
