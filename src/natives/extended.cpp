@@ -52,31 +52,28 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicObjectEx(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL Natives::CreateDynamicPickupEx(AMX* amx, cell* params)
 {
     CHECK_PARAMS(15);
-    if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_PICKUP) == core->getData()->pickups.size())
-    {
-        return INVALID_STREAMER_ID;
-    }
-    int pickupId = Item::Pickup::identifier.get();
-    Item::SharedPickup pickup(new Item::Pickup);
-    pickup->amx = amx;
-    pickup->pickupId = pickupId;
-    pickup->inverseAreaChecking = false;
-    pickup->originalComparableStreamDistance = -1.0f;
-    pickup->positionOffset = Eigen::Vector3f::Zero();
-    pickup->streamCallbacks = false;
-    pickup->modelId = static_cast<int>(params[1]);
-    pickup->type = static_cast<int>(params[2]);
-    pickup->position = Eigen::Vector3f(amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]));
-    pickup->comparableStreamDistance = amx_ctof(params[6]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[6]) : amx_ctof(params[6]) * amx_ctof(params[6]);
-    pickup->streamDistance = amx_ctof(params[6]);
-    Utility::convertArrayToContainer(amx, params[7], params[12], pickup->worlds);
-    Utility::convertArrayToContainer(amx, params[8], params[13], pickup->interiors);
-    Utility::convertArrayToContainer(amx, params[9], params[14], pickup->players);
-    Utility::convertArrayToContainer(amx, params[10], params[15], pickup->areas);
-    pickup->priority = static_cast<int>(params[11]);
-    core->getGrid()->addPickup(pickup);
-    core->getData()->pickups.insert(std::make_pair(pickupId, pickup));
-    return static_cast<cell>(pickupId);
+
+    int modelId = static_cast<int>(params[1]);
+    int type    = static_cast<int>(params[2]);
+
+    Eigen::Vector3f position { amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]) };
+
+    float streamDistance = amx_ctof(params[6]);
+
+    std::unordered_set<int> worlds;
+    std::unordered_set<int> interiors;
+    std::unordered_set<int> players;
+    std::unordered_set<int> areas;
+    Utility::convertArrayToContainer(amx, params[7], params[12], worlds);
+    Utility::convertArrayToContainer(amx, params[8], params[13], interiors);
+    Utility::convertArrayToContainer(amx, params[9], params[14], players);
+    Utility::convertArrayToContainer(amx, params[10], params[15], areas);
+
+    int priority = static_cast<int>(params[11]);
+
+    auto pickup = streamer::pickups::CreateDynamicPickupEx(amx, modelId, type, position, streamDistance, worlds, interiors, players, areas, priority);
+    if (pickup == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(pickup->getID());
 }
 
 cell AMX_NATIVE_CALL Natives::CreateDynamicCPEx(AMX* amx, cell* params)

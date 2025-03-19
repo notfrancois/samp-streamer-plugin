@@ -434,6 +434,27 @@ class OmpStreamerComponent final : public CoreEventHandler, public PawnEventHand
         return streamer::objects::GetPlayerCameraTargetDynObject(playerId);
     }
 
+    // pickups
+    std::shared_ptr<streamer::IPickup> getDynamicPickup(int pickupId)
+    {
+        return streamer::pickups::GetDynamicPickup(pickupId);
+    }
+
+    std::shared_ptr<streamer::IPickup> createDynamicPickup(int modelId, int type, const Vector3& position, int worldId, int interiorId, int playerId, float streamDistance, int areaId, int priority)
+    {
+        return streamer::pickups::CreateDynamicPickup(std::nullopt, modelId, type, Eigen::Vector3f { position.x, position.y, position.z }, worldId, interiorId, playerId, streamDistance, areaId, priority);
+    }
+
+    std::shared_ptr<streamer::IPickup> createDynamicPickupEx(int modelId, int type, const Vector3& position, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority)
+    {
+        return streamer::pickups::CreateDynamicPickupEx(std::nullopt, modelId, type, Eigen::Vector3f { position.x, position.y, position.z }, streamDistance, worlds, interiors, players, areas, priority);
+    }
+
+    bool destroyDynamicPickup(int pickupId)
+    {
+        return streamer::pickups::DestroyDynamicPickup(pickupId);
+    }
+
     // textlabels
     std::shared_ptr<streamer::ITextLabel> getDynamicTextLabel(int textlabelId)
     {

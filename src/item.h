@@ -22,6 +22,7 @@
 
 #include "actors.hpp"
 #include "objects.hpp"
+#include "pickups.hpp"
 #include "text-labels.hpp"
 
 namespace Item
@@ -120,37 +121,6 @@ namespace Item
         bool streamCallbacks;
         float streamDistance;
         int style;
-        int type;
-
-        std::unordered_set<int> areas;
-        std::vector<int> extras;
-        std::unordered_map<int, std::vector<int>> extraExtras;
-        std::unordered_set<int> interiors;
-        std::bitset<PLAYER_POOL_SIZE> players;
-        std::unordered_set<int> worlds;
-
-        static Identifier identifier;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
-
-    struct Pickup
-    {
-        Pickup();
-
-        AMX* amx;
-        SharedCell cell;
-        float comparableStreamDistance;
-        bool inverseAreaChecking;
-        int modelId;
-        float originalComparableStreamDistance;
-        int pickupId;
-        Eigen::Vector3f position;
-        Eigen::Vector3f positionOffset;
-        int priority;
-        int references;
-        bool streamCallbacks;
-        float streamDistance;
         int type;
 
         std::unordered_set<int> areas;

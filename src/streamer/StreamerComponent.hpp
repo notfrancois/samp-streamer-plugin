@@ -24,6 +24,8 @@ constexpr auto STREAMER_ACTOR_SD = 200.0f;
 constexpr auto STREAMER_OBJECT_SD = 300.0f;
 constexpr auto STREAMER_OBJECT_DD = 0.0f;
 
+constexpr auto STREAMER_PICKUP_SD = 200.0f;
+
 constexpr auto STREAMER_3D_TEXT_LABEL_SD = 200.0f;
 
 namespace streamer
@@ -124,6 +126,11 @@ namespace streamer
         virtual void                               setMaterialText(int materialIndex, const std::string& text, int size, const std::string& fontface, int fontsize, bool bold, int fontcolor, int backcolor, int textalignment) = 0;
     };
 
+    struct IPickup : public IIDProvider, public IExtensible
+    {
+        virtual Vector3 getPosition() const = 0;
+    };
+
     struct ITextLabel : public IIDProvider, public IExtensible
     {
         virtual Vector3 getPosition() const = 0;
@@ -151,6 +158,11 @@ struct IOmpStreamerComponent : public IComponent
     virtual std::shared_ptr<streamer::IObject> createDynamicObjectEx(int modelId, const Vector3& position, const Vector3& rotation, float streamDistance = STREAMER_OBJECT_SD, float drawDistance = STREAMER_OBJECT_DD, const std::unordered_set<int>& worlds = {}, const std::unordered_set<int>& interiors = {}, const std::unordered_set<int>& players = {}, const std::unordered_set<int>& areas = {}, int priority = 0) = 0;
     virtual bool                               destroyDynamicObject(int objectId)                                                                                                                                                                                                                                                                                                                                            = 0;
     virtual std::shared_ptr<streamer::IObject> getPlayerCameraTargetDynObject(int playerId)                                                                                                                                                                                                                                                                                                                                  = 0;
+
+    virtual std::shared_ptr<streamer::IPickup> getDynamicPickup(int pickupId)                                                                                                                                                                                                                                           = 0;
+    virtual std::shared_ptr<streamer::IPickup> createDynamicPickup(int modelId, int type, const Vector3& position, int worldId, int interiorId, int playerId, float streamDistance, int areaId, int priority)                                                                                                           = 0;
+    virtual std::shared_ptr<streamer::IPickup> createDynamicPickupEx(int modelId, int type, const Vector3& position, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority) = 0;
+    virtual bool                               destroyDynamicPickup(int pickupId)                                                                                                                                                                                                                                       = 0;
 
     virtual std::shared_ptr<streamer::ITextLabel> getDynamicTextLabel(int textlabelId)                                                                                                                                                                                                                                                                                                                                    = 0;
     virtual std::shared_ptr<streamer::ITextLabel> createDynamicTextLabel(const std::string& text, int color, const Vector3& position, float drawDistance, int attachedPlayerId = -1, int attachedVehicleId = -1, bool testLOS = false, int worldId = -1, int interiorId = -1, int playerId = -1, float streamDistance = STREAMER_3D_TEXT_LABEL_SD, int areaId = -1, int priority = 0)                                     = 0;

@@ -23,42 +23,28 @@
 cell AMX_NATIVE_CALL Natives::CreateDynamicPickup(AMX *amx, cell *params)
 {
 	CHECK_PARAMS(11);
-	if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_PICKUP) == core->getData()->pickups.size())
-	{
-		return INVALID_STREAMER_ID;
-	}
-	int pickupId = Item::Pickup::identifier.get();
-	Item::SharedPickup pickup(new Item::Pickup);
-	pickup->amx = amx;
-	pickup->pickupId = pickupId;
-	pickup->inverseAreaChecking = false;
-	pickup->originalComparableStreamDistance = -1.0f;
-	pickup->positionOffset = Eigen::Vector3f::Zero();
-	pickup->streamCallbacks = false;
-	pickup->modelId = static_cast<int>(params[1]);
-	pickup->type = static_cast<int>(params[2]);
-	pickup->position = Eigen::Vector3f(amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]));
-	Utility::addToContainer(pickup->worlds, static_cast<int>(params[6]));
-	Utility::addToContainer(pickup->interiors, static_cast<int>(params[7]));
-	Utility::addToContainer(pickup->players, static_cast<int>(params[8]));
-	pickup->comparableStreamDistance = amx_ctof(params[9]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[9]) : amx_ctof(params[9]) * amx_ctof(params[9]);
-	pickup->streamDistance = amx_ctof(params[9]);
-	Utility::addToContainer(pickup->areas, static_cast<int>(params[10]));
-	pickup->priority = static_cast<int>(params[11]);
-	core->getGrid()->addPickup(pickup);
-	core->getData()->pickups.insert(std::make_pair(pickupId, pickup));
-	return static_cast<cell>(pickupId);
+
+    int modelId = static_cast<int>(params[1]);
+    int type    = static_cast<int>(params[2]);
+
+    Eigen::Vector3f position { amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]) };
+
+    int   worldId        = static_cast<int>(params[6]);
+    int   interiorId     = static_cast<int>(params[7]);
+    int   playerId       = static_cast<int>(params[8]);
+    float streamDistance = amx_ctof(params[9]);
+    int   areaId         = static_cast<int>(params[10]);
+    int   priority       = static_cast<int>(params[11]);
+
+    auto pickup = streamer::pickups::CreateDynamicPickup(amx, modelId, type, position, worldId, interiorId, playerId, streamDistance, areaId, priority);
+	if (pickup == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(pickup->getID());
 }
 
 cell AMX_NATIVE_CALL Natives::DestroyDynamicPickup(AMX *amx, cell *params)
 {
 	CHECK_PARAMS(1);
-	std::unordered_map<int, Item::SharedPickup>::iterator p = core->getData()->pickups.find(static_cast<int>(params[1]));
-	if (p != core->getData()->pickups.end())
-	{
-		Utility::destroyPickup(p);
-		return 1;
-	}
+    if (streamer::pickups::DestroyDynamicPickup(static_cast<int>(params[1]))) return 1;
 	return 0;
 }
 

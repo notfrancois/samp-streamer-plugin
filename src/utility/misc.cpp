@@ -138,7 +138,7 @@ std::unordered_map<int, Item::SharedObject>::iterator Utility::destroyObject(std
 
 std::unordered_map<int, Item::SharedPickup>::iterator Utility::destroyPickup(std::unordered_map<int, Item::SharedPickup>::iterator p)
 {
-	Item::Pickup::identifier.remove(p->first, core->getData()->pickups.size());
+	streamer::pickups::Pickup::identifier.remove(p->first, core->getData()->pickups.size());
 	for (std::unordered_set<int>::const_iterator w = p->second->worlds.begin(); w != p->second->worlds.end(); ++w)
 	{
 		std::unordered_map<std::pair<int, int>, int, pair_hash>::iterator i = core->getData()->internalPickups.find(std::make_pair(p->first, *w));

@@ -22,6 +22,7 @@ list(APPEND PLUGIN_SOURCES
 	objects.cpp
     actors.cpp
     text-labels.cpp
+    pickups.cpp
 )
 
 if(WIN32)
