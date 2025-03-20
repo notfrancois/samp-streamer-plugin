@@ -22,11 +22,9 @@
 
 Identifier Item::Area::identifier;
 Identifier Item::Checkpoint::identifier;
-Identifier Item::MapIcon::identifier;
 Identifier Item::RaceCheckpoint::identifier;
 
 Item::Area::Area() : references(0) {}
 Item::Area::Attach::Attach() : references(0) {}
 Item::Checkpoint::Checkpoint() : references(0) {}
-Item::MapIcon::MapIcon() : references(0) {}
 Item::RaceCheckpoint::RaceCheckpoint() : references(0) {}

@@ -21,6 +21,7 @@
 #include "identifier.h"
 
 #include "actors.hpp"
+#include "map-icons.hpp"
 #include "objects.hpp"
 #include "pickups.hpp"
 #include "text-labels.hpp"
@@ -90,38 +91,6 @@ namespace Item
         float size;
         bool streamCallbacks;
         float streamDistance;
-
-        std::unordered_set<int> areas;
-        std::vector<int> extras;
-        std::unordered_map<int, std::vector<int>> extraExtras;
-        std::unordered_set<int> interiors;
-        std::bitset<PLAYER_POOL_SIZE> players;
-        std::unordered_set<int> worlds;
-
-        static Identifier identifier;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
-
-    struct MapIcon
-    {
-        MapIcon();
-
-        AMX* amx;
-        SharedCell cell;
-        int color;
-        float comparableStreamDistance;
-        bool inverseAreaChecking;
-        int mapIconId;
-        float originalComparableStreamDistance;
-        Eigen::Vector3f position;
-        Eigen::Vector3f positionOffset;
-        int priority;
-        int references;
-        bool streamCallbacks;
-        float streamDistance;
-        int style;
-        int type;
 
         std::unordered_set<int> areas;
         std::vector<int> extras;

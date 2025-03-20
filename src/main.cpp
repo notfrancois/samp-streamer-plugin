@@ -408,6 +408,27 @@ class OmpStreamerComponent final : public CoreEventHandler, public PawnEventHand
         return streamer::actors::GetPlayerCameraTargetDynActor(playerId);
     }
 
+    // map icons
+    std::shared_ptr<streamer::IMapIcon> getDynamicMapIcon(int mapIconId)
+    {
+        return streamer::mapicons::GetDynamicMapIcon(mapIconId);
+    }
+
+    std::shared_ptr<streamer::IMapIcon> createDynamicMapIcon(int modelId, const Vector3& position, int type, int color, int worldId, int interiorId, int playerId, float streamDistance, MapIconStyle style, int areaId, int priority)
+    {
+        return streamer::mapicons::CreateDynamicMapIcon(std::nullopt, Eigen::Vector3f { position.x, position.y, position.z }, type, color, worldId, interiorId, playerId, streamDistance, style, areaId, priority);
+    }
+
+    std::shared_ptr<streamer::IMapIcon> createDynamicMapIconEx(int modelId, const Vector3& position, int type, int color, int style, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority)
+    {
+        return streamer::mapicons::CreateDynamicMapIconEx(std::nullopt, Eigen::Vector3f { position.x, position.y, position.z }, type, color, style, streamDistance, worlds, interiors, players, areas, priority);
+    }
+
+    bool destroyDynamicMapIcon(int mapIconId)
+    {
+        return streamer::mapicons::DestroyDynamicMapIcon(mapIconId);
+    }
+
     // objects
     std::shared_ptr<streamer::IObject> getDynamicObject(int objectId)
     {

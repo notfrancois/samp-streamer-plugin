@@ -23,6 +23,7 @@ list(APPEND PLUGIN_SOURCES
     actors.cpp
     text-labels.cpp
     pickups.cpp
+    map-icons.cpp
 )
 
 if(WIN32)

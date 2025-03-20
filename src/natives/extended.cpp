@@ -20,6 +20,7 @@
 #include "../core.h"
 #include "../utility.h"
 #include "../objects.hpp"
+#include "../map-icons.hpp"
 
 cell AMX_NATIVE_CALL Natives::CreateDynamicObjectEx(AMX* amx, cell* params)
 {
@@ -139,32 +140,27 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicRaceCPEx(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL Natives::CreateDynamicMapIconEx(AMX* amx, cell* params)
 {
     CHECK_PARAMS(16);
-    if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_MAP_ICON) == core->getData()->mapIcons.size())
-    {
-        return INVALID_STREAMER_ID;
-    }
-    int mapIconId = Item::MapIcon::identifier.get();
-    Item::SharedMapIcon mapIcon(new Item::MapIcon);
-    mapIcon->amx = amx;
-    mapIcon->mapIconId = mapIconId;
-    mapIcon->inverseAreaChecking = false;
-    mapIcon->originalComparableStreamDistance = -1.0f;
-    mapIcon->positionOffset = Eigen::Vector3f::Zero();
-    mapIcon->streamCallbacks = false;
-    mapIcon->position = Eigen::Vector3f(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
-    mapIcon->type = static_cast<int>(params[4]);
-    mapIcon->color = static_cast<int>(params[5]);
-    mapIcon->style = static_cast<int>(params[6]);
-    mapIcon->comparableStreamDistance = amx_ctof(params[7]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[7]) : amx_ctof(params[7]) * amx_ctof(params[7]);
-    mapIcon->streamDistance = amx_ctof(params[7]);
-    Utility::convertArrayToContainer(amx, params[8], params[13], mapIcon->worlds);
-    Utility::convertArrayToContainer(amx, params[9], params[14], mapIcon->interiors);
-    Utility::convertArrayToContainer(amx, params[10], params[15], mapIcon->players);
-    Utility::convertArrayToContainer(amx, params[11], params[16], mapIcon->areas);
-    mapIcon->priority = static_cast<int>(params[12]);
-    core->getGrid()->addMapIcon(mapIcon);
-    core->getData()->mapIcons.insert(std::make_pair(mapIconId, mapIcon));
-    return static_cast<cell>(mapIconId);
+    Eigen::Vector3f position { amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]) };
+
+    int   type           = static_cast<int>(params[4]);
+    int   color          = static_cast<int>(params[5]);
+    int   style          = static_cast<int>(params[6]);
+    float streamDistance = amx_ctof(params[7]);
+
+    std::unordered_set<int> worlds;
+    std::unordered_set<int> interiors;
+    std::unordered_set<int> players;
+    std::unordered_set<int> areas;
+    Utility::convertArrayToContainer(amx, params[8], params[13], worlds);
+    Utility::convertArrayToContainer(amx, params[9], params[14], interiors);
+    Utility::convertArrayToContainer(amx, params[10], params[15], players);
+    Utility::convertArrayToContainer(amx, params[11], params[16], areas);
+
+    int priority = static_cast<int>(params[12]);
+
+    auto mapIcon = streamer::mapicons::CreateDynamicMapIconEx(amx, position, type, color, style, streamDistance, worlds, interiors, players, areas, priority);
+    if (mapIcon == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(mapIcon->getID());
 }
 
 cell AMX_NATIVE_CALL Natives::CreateDynamic3DTextLabelEx(AMX* amx, cell* params)
