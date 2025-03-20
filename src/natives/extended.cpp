@@ -109,32 +109,29 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicCPEx(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL Natives::CreateDynamicRaceCPEx(AMX* amx, cell* params)
 {
     CHECK_PARAMS(18);
-    if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_RACE_CP) == core->getData()->raceCheckpoints.size())
-    {
-        return INVALID_STREAMER_ID;
-    }
-    int raceCheckpointId = Item::RaceCheckpoint::identifier.get();
-    Item::SharedRaceCheckpoint raceCheckpoint(new Item::RaceCheckpoint);
-    raceCheckpoint->amx = amx;
-    raceCheckpoint->raceCheckpointId = raceCheckpointId;
-    raceCheckpoint->inverseAreaChecking = false;
-    raceCheckpoint->originalComparableStreamDistance = -1.0f;
-    raceCheckpoint->positionOffset = Eigen::Vector3f::Zero();
-    raceCheckpoint->streamCallbacks = false;
-    raceCheckpoint->type = static_cast<int>(params[1]);
-    raceCheckpoint->position = Eigen::Vector3f(amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]));
-    raceCheckpoint->next = Eigen::Vector3f(amx_ctof(params[5]), amx_ctof(params[6]), amx_ctof(params[7]));
-    raceCheckpoint->size = amx_ctof(params[8]);
-    raceCheckpoint->comparableStreamDistance = amx_ctof(params[9]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[9]) : amx_ctof(params[9]) * amx_ctof(params[9]);
-    raceCheckpoint->streamDistance = amx_ctof(params[9]);
-    Utility::convertArrayToContainer(amx, params[10], params[15], raceCheckpoint->worlds);
-    Utility::convertArrayToContainer(amx, params[11], params[16], raceCheckpoint->interiors);
-    Utility::convertArrayToContainer(amx, params[12], params[17], raceCheckpoint->players);
-    Utility::convertArrayToContainer(amx, params[13], params[18], raceCheckpoint->areas);
-    raceCheckpoint->priority = static_cast<int>(params[14]);
-    core->getGrid()->addRaceCheckpoint(raceCheckpoint);
-    core->getData()->raceCheckpoints.insert(std::make_pair(raceCheckpointId, raceCheckpoint));
-    return static_cast<cell>(raceCheckpointId);
+
+    int type = static_cast<int>(params[1]);
+
+    Eigen::Vector3f position { amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]) };
+    Eigen::Vector3f next { amx_ctof(params[5]), amx_ctof(params[6]), amx_ctof(params[7]) };
+
+    float size           = amx_ctof(params[8]);
+    float streamDistance = amx_ctof(params[9]);
+
+    std::unordered_set<int> worlds;
+    std::unordered_set<int> interiors;
+    std::unordered_set<int> players;
+    std::unordered_set<int> areas;
+    Utility::convertArrayToContainer(amx, params[10], params[15], worlds);
+    Utility::convertArrayToContainer(amx, params[11], params[16], interiors);
+    Utility::convertArrayToContainer(amx, params[12], params[17], players);
+    Utility::convertArrayToContainer(amx, params[13], params[18], areas);
+
+    int priority = static_cast<int>(params[14]);
+
+    auto raceCheckpoint = streamer::racecheckpoints::CreateDynamicRaceCheckpointEx(amx, type, position, next, size, streamDistance, worlds, interiors, players, areas, priority);
+    if (raceCheckpoint == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(raceCheckpoint->getID());
 }
 
 cell AMX_NATIVE_CALL Natives::CreateDynamicMapIconEx(AMX* amx, cell* params)

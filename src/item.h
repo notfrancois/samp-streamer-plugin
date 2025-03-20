@@ -24,6 +24,7 @@
 #include "map-icons.hpp"
 #include "objects.hpp"
 #include "pickups.hpp"
+#include "race-checkpoints.hpp"
 #include "text-labels.hpp"
 
 namespace Item
@@ -91,38 +92,6 @@ namespace Item
         float size;
         bool streamCallbacks;
         float streamDistance;
-
-        std::unordered_set<int> areas;
-        std::vector<int> extras;
-        std::unordered_map<int, std::vector<int>> extraExtras;
-        std::unordered_set<int> interiors;
-        std::bitset<PLAYER_POOL_SIZE> players;
-        std::unordered_set<int> worlds;
-
-        static Identifier identifier;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
-
-    struct RaceCheckpoint
-    {
-        RaceCheckpoint();
-
-        AMX* amx;
-        SharedCell cell;
-        float comparableStreamDistance;
-        bool inverseAreaChecking;
-        Eigen::Vector3f next;
-        float originalComparableStreamDistance;
-        Eigen::Vector3f position;
-        Eigen::Vector3f positionOffset;
-        int priority;
-        int raceCheckpointId;
-        int references;
-        float size;
-        bool streamCallbacks;
-        float streamDistance;
-        int type;
 
         std::unordered_set<int> areas;
         std::vector<int> extras;

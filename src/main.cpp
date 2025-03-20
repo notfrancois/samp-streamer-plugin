@@ -476,6 +476,27 @@ class OmpStreamerComponent final : public CoreEventHandler, public PawnEventHand
         return streamer::pickups::DestroyDynamicPickup(pickupId);
     }
 
+    // race checkpoints
+    std::shared_ptr<streamer::IRaceCheckpoint> getDynamicRaceCheckpoint(int raceCheckpointId)
+    {
+        return streamer::racecheckpoints::GetDynamicRaceCheckpoint(raceCheckpointId);
+    }
+
+    std::shared_ptr<streamer::IRaceCheckpoint> createDynamicRaceCheckpoint(int type, const Vector3& position, const Vector3& next, float size, int worldId, int interiorId, int playerId, float streamDistance, int areaId, int priority)
+    {
+        return streamer::racecheckpoints::CreateDynamicRaceCheckpoint(std::nullopt, type, Eigen::Vector3f { position.x, position.y, position.z }, Eigen::Vector3f { next.x, next.y, next.z }, size, worldId, interiorId, playerId, streamDistance, areaId, priority);
+    }
+
+    std::shared_ptr<streamer::IRaceCheckpoint> createDynamicRaceCheckpointEx(int type, const Vector3& position, const Vector3& next, float size, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority)
+    {
+        return streamer::racecheckpoints::CreateDynamicRaceCheckpointEx(std::nullopt, type, Eigen::Vector3f { position.x, position.y, position.z }, Eigen::Vector3f { next.x, next.y, next.z }, size, streamDistance, worlds, interiors, players, areas, priority);
+    }
+
+    bool destroyDynamicRaceCheckpoint(int raceCheckpointId)
+    {
+        return streamer::racecheckpoints::DestroyDynamicRaceCheckpoint(raceCheckpointId);
+    }
+
     // textlabels
     std::shared_ptr<streamer::ITextLabel> getDynamicTextLabel(int textlabelId)
     {

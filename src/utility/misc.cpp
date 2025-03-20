@@ -159,7 +159,7 @@ std::unordered_map<int, Item::SharedPickup>::iterator Utility::destroyPickup(std
 
 std::unordered_map<int, Item::SharedRaceCheckpoint>::iterator Utility::destroyRaceCheckpoint(std::unordered_map<int, Item::SharedRaceCheckpoint>::iterator r)
 {
-    Item::RaceCheckpoint::identifier.remove(r->first, core->getData()->raceCheckpoints.size());
+    streamer::racecheckpoints::RaceCheckpoint::identifier.remove(r->first, core->getData()->raceCheckpoints.size());
     for (std::unordered_map<int, Player>::iterator p = core->getData()->players.begin(); p != core->getData()->players.end(); ++p)
     {
         if (p->second.visibleRaceCheckpoint == r->first)

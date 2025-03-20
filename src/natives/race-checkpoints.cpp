@@ -23,32 +23,23 @@
 cell AMX_NATIVE_CALL Natives::CreateDynamicRaceCP(AMX *amx, cell *params)
 {
 	CHECK_PARAMS(14);
-	if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_RACE_CP) == core->getData()->raceCheckpoints.size())
-	{
-		return INVALID_STREAMER_ID;
-	}
-	int raceCheckpointId = Item::RaceCheckpoint::identifier.get();
-	Item::SharedRaceCheckpoint raceCheckpoint(new Item::RaceCheckpoint);
-	raceCheckpoint->amx = amx;
-	raceCheckpoint->raceCheckpointId = raceCheckpointId;
-	raceCheckpoint->inverseAreaChecking = false;
-	raceCheckpoint->originalComparableStreamDistance = -1.0f;
-	raceCheckpoint->positionOffset = Eigen::Vector3f::Zero();
-	raceCheckpoint->streamCallbacks = false;
-	raceCheckpoint->type = static_cast<int>(params[1]);
-	raceCheckpoint->position = Eigen::Vector3f(amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]));
-	raceCheckpoint->next = Eigen::Vector3f(amx_ctof(params[5]), amx_ctof(params[6]), amx_ctof(params[7]));
-	raceCheckpoint->size = amx_ctof(params[8]);
-	Utility::addToContainer(raceCheckpoint->worlds, static_cast<int>(params[9]));
-	Utility::addToContainer(raceCheckpoint->interiors, static_cast<int>(params[10]));
-	Utility::addToContainer(raceCheckpoint->players, static_cast<int>(params[11]));
-	raceCheckpoint->comparableStreamDistance = amx_ctof(params[12]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[12]) : amx_ctof(params[12]) * amx_ctof(params[12]);
-	raceCheckpoint->streamDistance = amx_ctof(params[12]);
-	Utility::addToContainer(raceCheckpoint->areas, static_cast<int>(params[13]));
-	raceCheckpoint->priority = static_cast<int>(params[14]);
-	core->getGrid()->addRaceCheckpoint(raceCheckpoint);
-	core->getData()->raceCheckpoints.insert(std::make_pair(raceCheckpointId, raceCheckpoint));
-	return static_cast<cell>(raceCheckpointId);
+
+    int type = static_cast<int>(params[1]);
+
+    Eigen::Vector3f position { amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]) };
+    Eigen::Vector3f next { amx_ctof(params[5]), amx_ctof(params[6]), amx_ctof(params[7]) };
+
+    float size           = amx_ctof(params[8]);
+    int   worldId        = static_cast<int>(params[9]);
+    int   interiorId     = static_cast<int>(params[10]);
+    int   playerId       = static_cast<int>(params[11]);
+    float streamDistance = amx_ctof(params[12]);
+    int   areaId         = static_cast<int>(params[13]);
+    int   priority       = static_cast<int>(params[14]);
+
+	auto raceCheckpoint = streamer::racecheckpoints::CreateDynamicRaceCheckpoint(amx, type, position, next, size, worldId, interiorId, playerId, streamDistance, areaId, priority);
+    if (raceCheckpoint == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(raceCheckpoint->getID());
 }
 
 cell AMX_NATIVE_CALL Natives::DestroyDynamicRaceCP(AMX *amx, cell *params)
