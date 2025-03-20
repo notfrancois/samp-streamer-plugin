@@ -56,7 +56,7 @@ std::unordered_map<int, Item::SharedArea>::iterator Utility::destroyArea(std::un
 
 std::unordered_map<int, Item::SharedCheckpoint>::iterator Utility::destroyCheckpoint(std::unordered_map<int, Item::SharedCheckpoint>::iterator c)
 {
-    Item::Checkpoint::identifier.remove(c->first, core->getData()->checkpoints.size());
+    streamer::checkpoints::Checkpoint::identifier.remove(c->first, core->getData()->checkpoints.size());
     for (std::unordered_map<int, Player>::iterator p = core->getData()->players.begin(); p != core->getData()->players.end(); ++p)
     {
         if (p->second.visibleCheckpoint == c->first)

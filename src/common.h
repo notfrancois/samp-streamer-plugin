@@ -73,6 +73,11 @@ namespace streamer::actors
     struct Actor;
 } // namespace streamer::actors
 
+namespace streamer::checkpoints
+{
+    struct Checkpoint;
+} // namespace streamer::checkpoints
+
 namespace streamer::mapicons
 {
     struct MapIcon;
@@ -101,11 +106,10 @@ namespace streamer::textlabels
 namespace Item
 {
     struct Area;
-    struct Checkpoint;
 
     typedef std::shared_ptr<streamer::actors::Actor> SharedActor;
     typedef std::shared_ptr<Area> SharedArea;
-    typedef std::shared_ptr<Checkpoint> SharedCheckpoint;
+    typedef std::shared_ptr<streamer::checkpoints::Checkpoint> SharedCheckpoint;
     typedef std::shared_ptr<streamer::mapicons::MapIcon> SharedMapIcon;
     typedef std::shared_ptr<streamer::objects::Object> SharedObject;
     typedef std::shared_ptr<streamer::pickups::Pickup> SharedPickup;

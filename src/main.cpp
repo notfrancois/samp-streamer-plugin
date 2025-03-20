@@ -408,6 +408,27 @@ class OmpStreamerComponent final : public CoreEventHandler, public PawnEventHand
         return streamer::actors::GetPlayerCameraTargetDynActor(playerId);
     }
 
+    // checkpoints
+    std::shared_ptr<streamer::ICheckpoint> getDynamicCheckpoint(int checkpointId)
+    {
+        return streamer::checkpoints::GetDynamicCheckpoint(checkpointId);
+    }
+
+    std::shared_ptr<streamer::ICheckpoint> createDynamicCheckpoint(const Vector3& position, float size, int worldId, int interiorId, int playerId, float streamDistance, int areaId, int priority)
+    {
+        return streamer::checkpoints::CreateDynamicCheckpoint(std::nullopt, Eigen::Vector3f { position.x, position.y, position.z }, size, worldId, interiorId, playerId, streamDistance, areaId, priority);
+    }
+
+    std::shared_ptr<streamer::ICheckpoint> createDynamicCheckpointEx(const Vector3& position, float size, float streamDistance, const std::unordered_set<int>& worlds, const std::unordered_set<int>& interiors, const std::unordered_set<int>& players, const std::unordered_set<int>& areas, int priority)
+    {
+        return streamer::checkpoints::CreateDynamicCheckpointEx(std::nullopt, Eigen::Vector3f { position.x, position.y, position.z }, size, streamDistance, worlds, interiors, players, areas, priority);
+    }
+
+    bool destroyDynamicCheckpoint(int checkpointId)
+    {
+        return streamer::checkpoints::DestroyDynamicCheckpoint(checkpointId);
+    }
+
     // map icons
     std::shared_ptr<streamer::IMapIcon> getDynamicMapIcon(int mapIconId)
     {

@@ -21,6 +21,7 @@
 #include "identifier.h"
 
 #include "actors.hpp"
+#include "checkpoints.hpp"
 #include "map-icons.hpp"
 #include "objects.hpp"
 #include "pickups.hpp"
@@ -62,36 +63,6 @@ namespace Item
         };
 
         std::shared_ptr<Attach> attach;
-
-        std::unordered_set<int> areas;
-        std::vector<int> extras;
-        std::unordered_map<int, std::vector<int>> extraExtras;
-        std::unordered_set<int> interiors;
-        std::bitset<PLAYER_POOL_SIZE> players;
-        std::unordered_set<int> worlds;
-
-        static Identifier identifier;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
-
-    struct Checkpoint
-    {
-        Checkpoint();
-
-        AMX* amx;
-        SharedCell cell;
-        int checkpointId;
-        float comparableStreamDistance;
-        bool inverseAreaChecking;
-        float originalComparableStreamDistance;
-        Eigen::Vector3f position;
-        Eigen::Vector3f positionOffset;
-        int priority;
-        int references;
-        float size;
-        bool streamCallbacks;
-        float streamDistance;
 
         std::unordered_set<int> areas;
         std::vector<int> extras;

@@ -25,6 +25,7 @@ list(APPEND PLUGIN_SOURCES
     pickups.cpp
     map-icons.cpp
     race-checkpoints.cpp
+    checkpoints.cpp
 )
 
 if(WIN32)

@@ -21,6 +21,8 @@
 
 constexpr auto STREAMER_ACTOR_SD = 200.0f;
 
+constexpr auto STREAMER_CP_SD = 200.0;
+
 constexpr auto STREAMER_MAP_ICON_SD = 200.0;
 
 constexpr auto STREAMER_OBJECT_SD = 300.0f;
@@ -67,6 +69,11 @@ namespace streamer
         virtual std::optional<Anim> getAnimation() const             = 0;
         virtual void                applyAnimation(const Anim& anim) = 0;
         virtual void                clearAnimation()                 = 0;
+    };
+
+    struct ICheckpoint : public IIDProvider, public IExtensible
+    {
+        virtual Vector3 getPosition() const = 0;
     };
 
     struct IMapIcon : public IIDProvider, public IExtensible
@@ -166,6 +173,11 @@ struct IOmpStreamerComponent : public IComponent
     virtual bool                              isDynamicActorStreamedIn(int actorId, int playerId)                                                                                                                                                                                                                                                                                                                       = 0;
     virtual std::shared_ptr<streamer::IActor> getPlayerTargetDynamicActor(int playerId)                                                                                                                                                                                                                                                                                                                                 = 0;
     virtual std::shared_ptr<streamer::IActor> getPlayerCameraTargetDynActor(int playerId)                                                                                                                                                                                                                                                                                                                               = 0;
+
+    virtual std::shared_ptr<streamer::ICheckpoint> getDynamicCheckpoint(int checkpointId)                                                                                                                                                                                                                                                                     = 0;
+    virtual std::shared_ptr<streamer::ICheckpoint> createDynamicCheckpoint(const Vector3& position, float size, int worldId = -1, int interiorId = -1, int playerId = -1, float streamDistance = STREAMER_RACE_CP_SD, int areaId = -1, int priority = 0)                                                                                                      = 0;
+    virtual std::shared_ptr<streamer::ICheckpoint> createDynamicCheckpointEx(const Vector3& position, float size, float streamDistance = STREAMER_CP_SD, const std::unordered_set<int>& worlds = {}, const std::unordered_set<int>& interiors = {}, const std::unordered_set<int>& players = {}, const std::unordered_set<int>& areas = {}, int priority = 0) = 0;
+    virtual bool                                   destroyDynamicCheckpoint(int checkpointId)                                                                                                                                                                                                                                                                 = 0;
 
     virtual std::shared_ptr<streamer::IMapIcon> getDynamicMapIcon(int mapIconId)                                                                                                                                                                                                                                                                                                               = 0;
     virtual std::shared_ptr<streamer::IMapIcon> createDynamicMapIcon(int modelId, const Vector3& position, int type, int color, int worldId = -1, int interiorId = -1, int playerId = -1, float streamDistance = STREAMER_MAP_ICON_SD, MapIconStyle style = MapIconStyle_Local, int areaId = -1, int priority = 0)                                                                             = 0;

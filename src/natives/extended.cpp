@@ -80,30 +80,26 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicPickupEx(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL Natives::CreateDynamicCPEx(AMX* amx, cell* params)
 {
     CHECK_PARAMS(14);
-    if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_CP) == core->getData()->checkpoints.size())
-    {
-        return INVALID_STREAMER_ID;
-    }
-    int checkpointId = Item::Checkpoint::identifier.get();
-    Item::SharedCheckpoint checkpoint(new Item::Checkpoint);
-    checkpoint->amx = amx;
-    checkpoint->checkpointId = checkpointId;
-    checkpoint->inverseAreaChecking = false;
-    checkpoint->originalComparableStreamDistance = -1.0f;
-    checkpoint->positionOffset = Eigen::Vector3f::Zero();
-    checkpoint->streamCallbacks = false;
-    checkpoint->position = Eigen::Vector3f(amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]));
-    checkpoint->size = amx_ctof(params[4]);
-    checkpoint->comparableStreamDistance = amx_ctof(params[5]) < STREAMER_STATIC_DISTANCE_CUTOFF ? amx_ctof(params[5]) : amx_ctof(params[5]) * amx_ctof(params[5]);
-    checkpoint->streamDistance = amx_ctof(params[5]);
-    Utility::convertArrayToContainer(amx, params[6], params[11], checkpoint->worlds);
-    Utility::convertArrayToContainer(amx, params[7], params[12], checkpoint->interiors);
-    Utility::convertArrayToContainer(amx, params[8], params[13], checkpoint->players);
-    Utility::convertArrayToContainer(amx, params[9], params[14], checkpoint->areas);
-    checkpoint->priority = static_cast<int>(params[10]);
-    core->getGrid()->addCheckpoint(checkpoint);
-    core->getData()->checkpoints.insert(std::make_pair(checkpointId, checkpoint));
-    return static_cast<cell>(checkpointId);
+
+    Eigen::Vector3f position { amx_ctof(params[1]), amx_ctof(params[2]), amx_ctof(params[3]) };
+
+    float size = amx_ctof(params[4]);
+    float streamDistance = amx_ctof(params[5]);
+
+    std::unordered_set<int> worlds;
+    std::unordered_set<int> interiors;
+    std::unordered_set<int> players;
+    std::unordered_set<int> areas;
+    Utility::convertArrayToContainer(amx, params[6], params[11], worlds);
+    Utility::convertArrayToContainer(amx, params[7], params[12], interiors);
+    Utility::convertArrayToContainer(amx, params[8], params[13], players);
+    Utility::convertArrayToContainer(amx, params[9], params[14], areas);
+
+    int priority = static_cast<int>(params[10]);
+
+    auto checkpoint = streamer::checkpoints::CreateDynamicCheckpointEx(amx, position, size, streamDistance, worlds, interiors, players, areas, priority);
+    if (checkpoint == nullptr) return INVALID_STREAMER_ID;
+    return static_cast<cell>(checkpoint->getID());
 }
 
 cell AMX_NATIVE_CALL Natives::CreateDynamicRaceCPEx(AMX* amx, cell* params)

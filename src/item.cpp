@@ -21,8 +21,6 @@
 #include "identifier.h"
 
 Identifier Item::Area::identifier;
-Identifier Item::Checkpoint::identifier;
 
 Item::Area::Area() : references(0) {}
 Item::Area::Attach::Attach() : references(0) {}
-Item::Checkpoint::Checkpoint() : references(0) {}
