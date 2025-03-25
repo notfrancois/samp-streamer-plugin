@@ -49,17 +49,18 @@ namespace streamer::textlabels
     void TextLabel::setText(const std::string& newtext)
     {
         text = newtext;
+        uint32_t color = 0xFFFFFFFF;
         for (std::unordered_map<int, Player>::iterator p = core->getData()->players.begin(); p != core->getData()->players.end(); ++p)
         {
             std::unordered_map<int, int>::iterator i = p->second.internalTextLabels.find(textLabelId);
             if (i != p->second.internalTextLabels.end())
             {
-                ompgdk::UpdatePlayer3DTextLabelText(p->first, i->second, text.c_str());
+                ompgdk::UpdatePlayer3DTextLabelText(p->first, i->second, color, text.c_str());
             }
         }
     }
 
-    void TextLabel::setText(const std::string& newtext, int newcolor)
+    void TextLabel::setText(const std::string& newtext, uint32_t newcolor)
     {
         color = newcolor;
         text  = newtext;

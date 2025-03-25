@@ -30,11 +30,11 @@ namespace streamer::textlabels
 
         virtual const std::string& getText() const override;
         virtual void               setText(const std::string& text) override;
-        virtual void               setText(const std::string& text, int color) override;
+        virtual void               setText(const std::string& text, uint32_t color) override;
 
         std::optional<AMX*> amx;
         SharedCell          cell;
-        int                 color;
+        uint32_t           color;
         float               comparableStreamDistance;
         float               drawDistance;
         bool                inverseAreaChecking;

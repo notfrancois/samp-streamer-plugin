@@ -42,7 +42,7 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicObject(AMX* amx, cell* params)
     int priority = static_cast<int>(params[14]);
 
     auto object = streamer::objects::CreateDynamicObject(amx, modelId, position, rotation, worldId, interiorId, playerId, streamDistance, drawDistance, areaId, priority);
-    if (!object) return INVALID_STREAMER_ID;
+    if (object == nullptr) return INVALID_STREAMER_ID;
 
     return static_cast<cell>(object->getID());
 }
@@ -500,7 +500,7 @@ cell AMX_NATIVE_CALL Natives::GetPlayerCameraTargetDynObject(AMX* amx, cell* par
 {
     CHECK_PARAMS(1);
 
-    auto& obj = streamer::objects::GetPlayerCameraTargetDynObject(static_cast<int>(params[1]));
+    auto obj = streamer::objects::GetPlayerCameraTargetDynObject(static_cast<int>(params[1]));
     if (obj == nullptr) return INVALID_STREAMER_ID;
     return obj->objectId;
 }

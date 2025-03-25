@@ -157,7 +157,7 @@ namespace streamer
 
         virtual const std::string& getText() const                             = 0;
         virtual void               setText(const std::string& text)            = 0;
-        virtual void               setText(const std::string& text, int color) = 0;
+        virtual void               setText(const std::string& text, uint32_t color) = 0;
     };
 } // namespace streamer
 
